@@ -15,8 +15,7 @@ import android.widget.TextView;
 import java.util.List;
 
 /***
- * No se está mostrando nada dentro del fragment aiuda! MAÑANA CHECAR A PRIMERA HORA EL CODIGO Y
- * COMPARARLO CON EL DEL LIBRO
+ * Ahora se hace shuffle dentro de los items del RecyclerView cuando se hace scroll
  */
 
 public class CrimeListFragment extends Fragment {
@@ -50,26 +49,27 @@ public class CrimeListFragment extends Fragment {
     }
 
     private class CrimeHolder extends RecyclerView.ViewHolder{
+        private Crime mCrime;
+
         public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_crime, parent, false));
 
             mTitleTextView = itemView.findViewById(R.id.crime_title);
             mDateTextView = itemView.findViewById(R.id.crime_date);
         }
-    }
-
-    private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder>{
-        private List<Crime> mCrimes;
-        private Crime mCrime;
-
-        public CrimeAdapter(List<Crime> crimes){
-            mCrimes = crimes;
-        }
 
         public void bind(Crime crime){
             mCrime = crime;
             mTitleTextView.setText(mCrime.getTitle());
             mDateTextView.setText(mCrime.getDate().toString());
+        }
+    }
+
+    private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder>{
+        private List<Crime> mCrimes;
+
+        public CrimeAdapter(List<Crime> crimes){
+            mCrimes = crimes;
         }
 
         @NonNull
@@ -83,7 +83,7 @@ public class CrimeListFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull CrimeHolder crimeHolder, int i) {
             Crime crime = mCrimes.get(i);
-            bind(crime);
+            crimeHolder.bind(crime);
         }
 
         @Override
