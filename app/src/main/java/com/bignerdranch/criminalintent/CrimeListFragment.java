@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -21,6 +22,8 @@ import java.util.List;
 public class CrimeListFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private CrimeAdapter mCrimeAdapter;
+    private TextView mTitleTextView;
+    private TextView mDateTextView;
 
     @Nullable
     @Override
@@ -49,14 +52,24 @@ public class CrimeListFragment extends Fragment {
     private class CrimeHolder extends RecyclerView.ViewHolder{
         public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_crime, parent, false));
+
+            mTitleTextView = itemView.findViewById(R.id.crime_title);
+            mDateTextView = itemView.findViewById(R.id.crime_date);
         }
     }
 
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder>{
         private List<Crime> mCrimes;
+        private Crime mCrime;
 
         public CrimeAdapter(List<Crime> crimes){
             mCrimes = crimes;
+        }
+
+        public void bind(Crime crime){
+            mCrime = crime;
+            mTitleTextView.setText(mCrime.getTitle());
+            mDateTextView.setText(mCrime.getDate().toString());
         }
 
         @NonNull
@@ -69,7 +82,8 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull CrimeHolder crimeHolder, int i) {
-
+            Crime crime = mCrimes.get(i);
+            bind(crime);
         }
 
         @Override
