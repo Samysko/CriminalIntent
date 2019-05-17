@@ -10,14 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
-
-/***
- * Ahora se hace shuffle dentro de los items del RecyclerView cuando se hace scroll
- */
 
 public class CrimeListFragment extends Fragment {
     private RecyclerView mRecyclerView;
@@ -54,7 +51,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(getActivity(), "CLICKED", Toast.LENGTH_SHORT).show();g
+            Toast.makeText(getActivity(), "CLICKED", Toast.LENGTH_SHORT).show();
         }
 
         public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
@@ -72,7 +69,38 @@ public class CrimeListFragment extends Fragment {
         }
     }
 
-    private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder>{
+    private class SeriousCrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private Crime mCrime;
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getActivity(), "CLICKED", Toast.LENGTH_SHORT).show();
+        }
+
+        public SeriousCrimeHolder(LayoutInflater inflater, ViewGroup parent) {
+            super(inflater.inflate(R.layout.list_item_serious_crime, parent, false));
+            itemView.setOnClickListener(this);
+
+            mTitleTextView = itemView.findViewById(R.id.crime_title);
+            mDateTextView = itemView.findViewById(R.id.crime_date);
+            Button crimeButton = itemView.findViewById(R.id.crime_button);
+            crimeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "Button Clicked", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
+
+        public void bind(Crime crime){
+            mCrime = crime;
+            mTitleTextView.setText(mCrime.getTitle());
+            mDateTextView.setText(mCrime.getDate().toString());
+        }
+    }
+
+    private class CrimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         private List<Crime> mCrimes;
 
         public CrimeAdapter(List<Crime> crimes){
@@ -81,16 +109,26 @@ public class CrimeListFragment extends Fragment {
 
         @NonNull
         @Override
-        public CrimeHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
 
-            return new CrimeHolder(layoutInflater, viewGroup);
+            if(viewType == 1)
+                    return new SeriousCrimeHolder(layoutInflater, viewGroup);
+            else
+                    return new CrimeHolder(layoutInflater, viewGroup);
+
         }
 
         @Override
-        public void onBindViewHolder(@NonNull CrimeHolder crimeHolder, int i) {
-            Crime crime = mCrimes.get(i);
-            crimeHolder.bind(crime);
+        public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int position) {
+            Crime crime = mCrimes.get(position);
+
+            if(viewHolder instanceof SeriousCrimeHolder){
+                ((SeriousCrimeHolder)viewHolder).bind(crime);
+            }else{
+                ((CrimeHolder)viewHolder).bind(crime);
+            }
+
         }
 
         @Override
@@ -100,6 +138,10 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public int getItemViewType(int position) {
+            if(mCrimes.get(position).isRequiresPolice()){
+                return 1;
+            }
+
             return position;
         }
 
