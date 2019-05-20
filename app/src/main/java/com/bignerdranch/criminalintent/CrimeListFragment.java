@@ -54,7 +54,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(getActivity(), "CLICKED", Toast.LENGTH_SHORT).show();g
+            Toast.makeText(getActivity(), "CLICKED", Toast.LENGTH_SHORT).show();
         }
 
         public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
