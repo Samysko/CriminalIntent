@@ -1,5 +1,6 @@
 package com.bignerdranch.criminalintent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -49,7 +50,8 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(getActivity(), "CLICKED", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getActivity(), CrimeActivity.class);
+            startActivity(intent);
         }
 
         public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
