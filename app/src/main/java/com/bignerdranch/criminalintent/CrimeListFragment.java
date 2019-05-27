@@ -21,6 +21,8 @@ public class CrimeListFragment extends Fragment {
     private TextView mTitleTextView;
     private TextView mDateTextView;
 
+    private int mPositionOfItemSelected;
+
     @Override
     public void onResume() {
         super.onResume();
@@ -50,9 +52,7 @@ public class CrimeListFragment extends Fragment {
             mCrimeAdapter = new CrimeAdapter(crimes);
             mRecyclerView.setAdapter(mCrimeAdapter);
         }else{
-            mCrimeAdapter.notifyDataSetChanged();
-            mCrimeAdapter = new CrimeAdapter(crimes);
-            mRecyclerView.setAdapter(mCrimeAdapter);
+            mCrimeAdapter.notifyItemChanged(mPositionOfItemSelected);
         }
 
     }
@@ -63,6 +63,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
+            mPositionOfItemSelected = getAdapterPosition();
             Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
             startActivity(intent);
         }

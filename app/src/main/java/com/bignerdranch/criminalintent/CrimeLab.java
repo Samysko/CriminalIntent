@@ -3,7 +3,6 @@ package com.bignerdranch.criminalintent;
 import android.content.Context;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
