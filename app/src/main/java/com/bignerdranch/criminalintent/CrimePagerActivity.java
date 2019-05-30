@@ -3,12 +3,16 @@ package com.bignerdranch.criminalintent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +20,8 @@ import java.util.UUID;
 public class CrimePagerActivity extends AppCompatActivity {
     ViewPager mViewPager;
     List<Crime> mCrimes;
+    Button mFirstButton;
+    Button mLastButton;
 
     public static final String EXTRA_CRIME_ID = "com.bignerdranch.criminalintent.crime_id";
 
@@ -33,10 +39,19 @@ public class CrimePagerActivity extends AppCompatActivity {
         UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
 
         mViewPager = findViewById(R.id.crime_view_pager);
+        mFirstButton = findViewById(R.id.crime_first_button);
+        mLastButton = findViewById(R.id.crime_last_button);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         mCrimes = CrimeLab.get(this).getCrimes();
-        mViewPager.setAdapter(new FragmentPagerAdapter(fragmentManager) {
+        mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
+
+            @Override
+            public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+                super.setPrimaryItem(container, position, object);
+                updateButtons(position);
+            }
+
             @Override
             public Fragment getItem(int i) {
                 Crime crime = mCrimes.get(i);
@@ -55,6 +70,39 @@ public class CrimePagerActivity extends AppCompatActivity {
                 mViewPager.setCurrentItem(i);
                 break;
             }
+        }
+
+        mFirstButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(0);
+
+                updateButtons(mViewPager.getCurrentItem());
+            }
+        });
+
+        mLastButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(mCrimes.size() - 1);
+
+                updateButtons(mViewPager.getCurrentItem());
+
+            }
+        });
+
+    }
+
+    private void updateButtons(int currentPageItem){
+        if(mViewPager.getCurrentItem() == 0){
+            mFirstButton.setEnabled(false);
+            mLastButton.setEnabled(true);
+        }else if(mViewPager.getCurrentItem() == mCrimes.size() - 1){
+            mLastButton.setEnabled(false);
+            mFirstButton.setEnabled(true);
+        }else{
+            mLastButton.setEnabled(true);
+            mFirstButton.setEnabled(true);
         }
     }
 }
