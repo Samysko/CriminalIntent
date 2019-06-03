@@ -10,11 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 public class DatePickerFragment extends DialogFragment {
-    View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_date, null);
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_date, null);
+
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setTitle(R.string.date_picker_title)
