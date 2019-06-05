@@ -25,10 +25,13 @@ public class CrimeFragment extends Fragment {
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
+    private Button mTimeButton;
     private CheckBox mSolvedCheckBox;
 
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
+    private static final String DIALOG_TIME = "DialogTime";
+
 
     private static final int REQUEST_DATE = 0;
 
@@ -84,6 +87,18 @@ public class CrimeFragment extends Fragment {
                 dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
                 dialog.show(manager, DIALOG_DATE);
 
+            }
+        });
+
+        mTimeButton = view.findViewById(R.id.crime_time);
+        mTimeButton.setText(DateFormat.getTimeInstance(DateFormat.SHORT, Locale.US)
+                .format(mCrime.getDate()));
+        mTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getFragmentManager();
+                TimePickerFragment dialog = TimePickerFragment.newInstance(mCrime.getDate());
+                dialog.show(fragmentManager, DIALOG_TIME);
             }
         });
 
