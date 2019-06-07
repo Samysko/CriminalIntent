@@ -34,6 +34,7 @@ public class CrimeFragment extends Fragment {
 
 
     private static final int REQUEST_DATE = 0;
+    private static final int REQUEST_TIME = 1;
 
     public static CrimeFragment newInstance(UUID uuid){
         Bundle args = new Bundle();
@@ -90,14 +91,16 @@ public class CrimeFragment extends Fragment {
             }
         });
 
+
+        //RNext Step: Retrieve time updated from TimePickerFragment
         mTimeButton = view.findViewById(R.id.crime_time);
-        mTimeButton.setText(DateFormat.getTimeInstance(DateFormat.SHORT, Locale.US)
-                .format(mCrime.getDate()));
+        updateTime();
         mTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager fragmentManager = getFragmentManager();
                 TimePickerFragment dialog = TimePickerFragment.newInstance(mCrime.getDate());
+                dialog.setTargetFragment(CrimeFragment.this, REQUEST_TIME);
                 dialog.show(fragmentManager, DIALOG_TIME);
             }
         });
@@ -118,9 +121,22 @@ public class CrimeFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Date date = (Date) data.getExtras().getSerializable(DatePickerFragment.EXTRA_DATE);
+        Date date = mCrime.getDate();
+
+        if(requestCode == REQUEST_DATE) {
+            date = (Date) data.getExtras().getSerializable(DatePickerFragment.EXTRA_DATE);
+        } else if(requestCode == REQUEST_TIME){
+            date = (Date) data.getExtras().getSerializable(TimePickerFragment.EXTRA_TIME);
+        }
+
         mCrime.setDate(date);
+        updateTime();
         updateDate();
+    }
+
+    private void updateTime() {
+        mTimeButton.setText(DateFormat.getTimeInstance(DateFormat.SHORT, Locale.US)
+                .format(mCrime.getDate()));
     }
 
     private void updateDate() {

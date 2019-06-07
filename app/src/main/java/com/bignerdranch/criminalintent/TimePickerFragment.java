@@ -1,9 +1,11 @@
 package com.bignerdranch.criminalintent;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,11 +16,14 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class TimePickerFragment extends DialogFragment {
     TimePicker mTimePicker;
 
-    public static String ARG_TIME = "com.bignerdranch.criminalintent.time";
+    private static String ARG_TIME = "time";
+
+    public static String EXTRA_TIME = "com.bignerdranch.criminalintent.time";
 
     public static TimePickerFragment newInstance(Date date) {
         Bundle args = new Bundle();
@@ -35,7 +40,7 @@ public class TimePickerFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Date date = (Date)getArguments().getSerializable(ARG_TIME);
 
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
 
         int hour = calendar.get(Calendar.HOUR);
@@ -53,8 +58,22 @@ public class TimePickerFragment extends DialogFragment {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        int hour = mTimePicker.getHour();
+                        int minute = mTimePicker.getMinute();
+                        int day = calendar.get(Calendar.DAY_OF_WEEK);
+                        int month = calendar.get(Calendar.MONTH);
+                        int year = calendar.get(Calendar.YEAR);
 
+                        Date date = new GregorianCalendar(year, month, day, hour, minute).getTime();
+                        sendResult(Activity.RESULT_OK, date);
                     }
                 }).create();
+    }
+
+    private void sendResult(int resultCode, Date date){
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_TIME, date);
+
+        getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
     }
 }
