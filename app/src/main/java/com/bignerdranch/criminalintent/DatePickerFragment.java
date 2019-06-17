@@ -44,7 +44,7 @@ public class DatePickerFragment extends DialogFragment {
 
         Date date = (Date) getArguments().getSerializable(ARG_DATE);
 
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
 
         int year = calendar.get(Calendar.YEAR);
@@ -61,8 +61,10 @@ public class DatePickerFragment extends DialogFragment {
                 int year = mDatePicker.getYear();
                 int month = mDatePicker.getMonth();
                 int day = mDatePicker.getDayOfMonth();
+                int hour = calendar.get(Calendar.HOUR);
+                int minute = calendar.get(Calendar.MINUTE);
 
-                Date date = new GregorianCalendar(year, month, day).getTime();
+                Date date = new GregorianCalendar(year, month, day, hour, minute).getTime();
                 sendResult(Activity.RESULT_OK, date);
 
                 getActivity().getSupportFragmentManager().beginTransaction()
@@ -111,6 +113,12 @@ public class DatePickerFragment extends DialogFragment {
         Intent intent = new Intent();
         intent.putExtra(EXTRA_DATE, date);
 
-        getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
+        if(getTargetFragment() != null){
+            getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
+
+        }else{
+            getActivity().setResult(Activity.RESULT_OK, intent);
+
+        }
     }
 }

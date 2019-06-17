@@ -9,20 +9,19 @@ import java.util.Date;
 public class DatePickerActivity extends SingleFragmentActivity {
     private static final String EXTRA_DATE = "date";
 
-    public Intent newIntent(Context context, Date date){
-        Intent intent = new Intent(context, DatePickerFragment.class);
+    @Override
+    protected Fragment createFragment() {
+        Date date = (Date) getIntent().getExtras().getSerializable(EXTRA_DATE);
+
+        return DatePickerFragment.newInstance(date);
+    }
+
+    public static Intent newIntent(Context context, Date date){
+        Intent intent = new Intent(context, DatePickerActivity.class);
         intent.putExtra(EXTRA_DATE, date);
 
         return intent;
 
     }
 
-    @Override
-    protected Fragment createFragment() {
-        Date date = (Date) getIntent().getExtras().getSerializable(EXTRA_DATE);
-
-        DatePickerFragment fragment = DatePickerFragment.newInstance(date);
-
-        return fragment;
-    }
 }

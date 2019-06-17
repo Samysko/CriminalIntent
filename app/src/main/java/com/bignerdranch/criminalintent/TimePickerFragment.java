@@ -60,7 +60,7 @@ public class TimePickerFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         int hour = mTimePicker.getHour();
                         int minute = mTimePicker.getMinute();
-                        int day = calendar.get(Calendar.DAY_OF_WEEK);
+                        int day = calendar.get(Calendar.DAY_OF_MONTH);
                         int month = calendar.get(Calendar.MONTH);
                         int year = calendar.get(Calendar.YEAR);
 
