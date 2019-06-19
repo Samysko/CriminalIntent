@@ -25,6 +25,8 @@ public class CrimeListFragment extends Fragment {
     private TextView mTitleTextView;
     private TextView mDateTextView;
 
+    private boolean mSubtitleVisible;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
