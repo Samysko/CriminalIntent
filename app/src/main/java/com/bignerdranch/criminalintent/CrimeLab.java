@@ -28,6 +28,10 @@ public class CrimeLab {
         return sCrime;
     }
 
+    public void deleteCrime(Crime c){
+        mCrimes.remove(c);
+    }
+
     public List<Crime> getCrimes(){
         return mCrimes;
     }
