@@ -12,19 +12,15 @@ import java.util.UUID;
 public class CrimeLab {
     private static CrimeLab sCrime;
 
-    private List<Crime> mCrimes;
     private Context mContext;
     private SQLiteDatabase mSQLiteDatabase;
 
     private CrimeLab(Context context){
         mContext = context.getApplicationContext();
         mSQLiteDatabase = new CrimeBaseHelper(mContext).getWritableDatabase();
-
-        mCrimes = new ArrayList<>();
     }
 
     public void addCrime(Crime c){
-        mCrimes.add(c);
     }
 
     public static CrimeLab get(Context context){
@@ -36,16 +32,11 @@ public class CrimeLab {
     }
 
     public List<Crime> getCrimes(){
-        return mCrimes;
+        return new ArrayList<>();
     }
 
     public Crime getCrime(UUID uuid){
-        for (Crime crime: mCrimes) {
-            if(crime.getId().equals(uuid)){
-                return crime;
-            }
-        }
-
+        
         return null;
     }
 
