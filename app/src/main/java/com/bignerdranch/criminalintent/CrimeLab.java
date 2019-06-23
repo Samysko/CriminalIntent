@@ -51,6 +51,15 @@ public class CrimeLab {
         return contentValues;
     }
 
+    public void updateCrime(Crime crime){
+        String uuidString = crime.getId().toString();
+        ContentValues contentValues = getContentValues(crime);
+
+        mSQLiteDatabase.update(CrimeTable.NAME, contentValues,
+                CrimeTable.Cols.UUID + "= ?", new String[]{uuidString});
+
+    }
+
     public Crime getCrime(UUID uuid){
 
         return null;
