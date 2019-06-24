@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.bignerdranch.criminalintent.database.CrimeBaseHelper;
+import com.bignerdranch.criminalintent.database.CrimeCursorWrapper;
 import com.bignerdranch.criminalintent.database.CrimeDbSchema.CrimeTable;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class CrimeLab {
         return sCrime;
     }
 
-    public Cursor getQueryCrimes(String whereClause, String[] whereArgs){
+    public CrimeCursorWrapper getQueryCrimes(String whereClause, String[] whereArgs){
         Cursor cursor = mSQLiteDatabase.query(CrimeTable.NAME,
                 null,
                 whereClause,
@@ -47,7 +48,7 @@ public class CrimeLab {
                 null,
                 null);
 
-        return cursor;
+        return new CrimeCursorWrapper(cursor);
     }
 
     public List<Crime> getCrimes(){
