@@ -83,14 +83,32 @@ public class CrimeLab {
         String uuidString = crime.getId().toString();
         ContentValues contentValues = getContentValues(crime);
 
-        mSQLiteDatabase.update(CrimeTable.NAME, contentValues,
-                CrimeTable.Cols.UUID + "= ?", new String[]{uuidString});
+        mSQLiteDatabase.update(
+                CrimeTable.NAME,
+                contentValues,
+                CrimeTable.Cols.UUID + "= ?",
+                new String[]{uuidString}
+        );
 
     }
 
     public Crime getCrime(UUID uuid){
+        CrimeCursorWrapper cursor = getQueryCrimes(
+                CrimeTable.Cols.UUID + "= ?",
+                new String[]{uuid.toString()}
+        );
 
-        return null;
+        try{
+            if(cursor.getCount() == 0){
+                return null;
+            }
+
+            cursor.moveToFirst();
+            return cursor.getCrime();
+
+        }finally {
+            cursor.close();
+        }
     }
 
 }
