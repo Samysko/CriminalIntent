@@ -74,6 +74,7 @@ public class CrimeFragment extends Fragment {
         switch(item.getItemId()){
             case R.id.delete_crime:
                 CrimeLab.get(getContext()).deleteCrime(mCrime);
+                getActivity().finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
