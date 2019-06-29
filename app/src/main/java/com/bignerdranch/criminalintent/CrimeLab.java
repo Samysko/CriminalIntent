@@ -31,6 +31,15 @@ public class CrimeLab {
 
     }
 
+    public void deleteCrime(Crime c){
+        ContentValues contentValues = getContentValues(c);
+
+        mSQLiteDatabase.delete(CrimeTable.NAME,
+                CrimeTable.Cols.UUID + "= ?",
+                new String[] {c.getId().toString()}
+        );
+    }
+
     public static CrimeLab get(Context context){
         if(sCrime == null){
             sCrime = new CrimeLab(context);
