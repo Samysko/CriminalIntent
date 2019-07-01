@@ -1,6 +1,9 @@
 package com.bignerdranch.criminalintent;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
@@ -138,11 +141,35 @@ public class CrimeFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode != Activity.RESULT_OK){
+            return;
+        }
 
-        Date date = (Date) data.getExtras().getSerializable(DatePickerFragment.EXTRA_DATE);
-        mCrime.setDate(date);
-        updateDate();
+        if(requestCode == REQUEST_DATE){
+            Date date = (Date) data.getExtras().getSerializable(DatePickerFragment.EXTRA_DATE);
+            mCrime.setDate(date);
+            updateDate();
+        } else if(requestCode == REQUEST_CONTACT && data != null){
+            Uri uri = data.getData();
+            String[] queryFields = {ContactsContract.Contacts.DISPLAY_NAME};
+
+            Cursor c = getActivity().getContentResolver().query(uri, queryFields,
+                    null, null, null);
+            try{
+                if(c.getCount() == 0){
+                    return;
+                }
+
+                c.moveToFirst();
+                String suspect = c.getString(0);
+                mCrime.setSuspect(suspect);
+                mContactButton.setText(mCrime.getSuspect());
+            } finally {
+                c.close();
+            }
+
+        }
+
     }
 
     private void updateDate() {
