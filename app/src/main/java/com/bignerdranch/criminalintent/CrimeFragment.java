@@ -1,5 +1,6 @@
 package com.bignerdranch.criminalintent;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,9 +10,11 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -33,6 +36,7 @@ public class CrimeFragment extends Fragment {
     private Button mDateButton;
     private Button mReportButton;
     private Button mContactButton;
+    private Button mCallButton;
     private CheckBox mSolvedCheckBox;
 
     private static final String ARG_CRIME_ID = "crime_id";
@@ -40,6 +44,8 @@ public class CrimeFragment extends Fragment {
 
     private static final int REQUEST_DATE = 0;
     public static final int REQUEST_CONTACT = 1;
+
+    public static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 10;
 
     public static CrimeFragment newInstance(UUID uuid){
         Bundle args = new Bundle();
@@ -134,6 +140,44 @@ public class CrimeFragment extends Fragment {
             }
         });
 
+        /**
+         * Working on this, trying to get the phone number from the contact picked as a suspect
+         */
+        mCallButton = view.findViewById(R.id.crime_call);
+        mCallButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                if((ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED)
+                        && (ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED)){
+
+                    Cursor c = getActivity().getContentResolver().query(
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                            new String[]{ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                                    ContactsContract.CommonDataKinds.Phone.NUMBER},
+                            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + "=?",
+                            new String[]{mCrime.getSuspect()},
+                            null);
+                    c.moveToFirst();
+                    String phoneNumber = "tel:" + c.getString(1);
+                    Uri uriPhoneNumber = Uri.parse(phoneNumber);
+
+                   //Intent intent = new Intent(Intent.ACTION_CALL);
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(uriPhoneNumber);
+                    startActivity(intent);
+                }else{
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.READ_CONTACTS,
+                                    Manifest.permission.CALL_PHONE},
+                            MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+                }
+
+
+            }
+        });
+
         final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         mContactButton = view.findViewById(R.id.crime_suspect);
         mContactButton.setOnClickListener(new View.OnClickListener() {
@@ -143,16 +187,24 @@ public class CrimeFragment extends Fragment {
             }
         });
 
-        if(mCrime.getSuspect() != null){
-            mContactButton.setText(mCrime.getSuspect());
-        }
+        updateContactButton();
 
+        //What is this?
         PackageManager packageManager = getActivity().getPackageManager();
         if(packageManager.resolveActivity(pickContact, PackageManager.MATCH_DEFAULT_ONLY) == null){
             mContactButton.setEnabled(false);
         }
 
         return view;
+    }
+
+    private void updateContactButton() {
+        if (mCrime.getSuspect() != null) {
+            mContactButton.setText(mCrime.getSuspect());
+            mCallButton.setEnabled(true);
+        } else {
+            mCallButton.setEnabled(false);
+        }
     }
 
     @Override
@@ -179,7 +231,8 @@ public class CrimeFragment extends Fragment {
                 c.moveToFirst();
                 String suspect = c.getString(0);
                 mCrime.setSuspect(suspect);
-                mContactButton.setText(mCrime.getSuspect());
+                updateContactButton();
+
             } finally {
                 c.close();
             }
