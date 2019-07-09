@@ -9,6 +9,7 @@ import com.bignerdranch.criminalintent.database.CrimeBaseHelper;
 import com.bignerdranch.criminalintent.database.CrimeCursorWrapper;
 import com.bignerdranch.criminalintent.database.CrimeDbSchema.CrimeTable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -110,6 +111,17 @@ public class CrimeLab {
         }finally {
             cursor.close();
         }
+    }
+
+    /**
+     * This is not going to create any files on the filesystem. Only returns File objects
+     * that point to the right locations
+     * @param crime a param that will help to obtain the photo's filename
+     * @return File object that point to the right location
+     */
+    public File getPhotoFile(Crime crime){
+        File filesDir = mContext.getFilesDir();
+        return new File(filesDir, crime.getPhotoFilename());
     }
 
 }
