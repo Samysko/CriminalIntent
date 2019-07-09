@@ -145,7 +145,7 @@ public class CrimeFragment extends Fragment {
         }
 
         mPhotoButton = view.findViewById(R.id.crime_camera);
-        mPhotoView = view.findViewById(R.id.crime_photo);   
+        mPhotoView = view.findViewById(R.id.crime_photo);
 
         return view;
     }
