@@ -32,6 +32,8 @@ public class CrimeFragment extends Fragment {
     private Button mDateButton;
     private Button mReportButton;
     private Button mContactButton;
+    private Button mPhotoButton;
+    private Button mPhotoView;
     private CheckBox mSolvedCheckBox;
 
     private static final String ARG_CRIME_ID = "crime_id";
@@ -141,6 +143,9 @@ public class CrimeFragment extends Fragment {
         if(packageManager.resolveActivity(pickContact, PackageManager.MATCH_DEFAULT_ONLY) == null){
             mContactButton.setEnabled(false);
         }
+
+        mPhotoButton = view.findViewById(R.id.crime_camera);
+        mPhotoView = view.findViewById(R.id.crime_photo);   
 
         return view;
     }
