@@ -23,6 +23,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -37,8 +39,8 @@ public class CrimeFragment extends Fragment {
     private Button mDateButton;
     private Button mReportButton;
     private Button mContactButton;
-    private Button mPhotoButton;
-    private Button mPhotoView;
+    private ImageButton mPhotoButton;
+    private ImageView mPhotoView;
     private CheckBox mSolvedCheckBox;
     private File mPhotoFile;
 
