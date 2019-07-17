@@ -189,6 +189,8 @@ public class CrimeFragment extends Fragment {
         });
         // ... here
 
+        updatePhoto();
+
         return view;
     }
 
@@ -221,6 +223,14 @@ public class CrimeFragment extends Fragment {
                 c.close();
             }
 
+        } else if(requestCode == REQUEST_PHOTO){
+            Uri uri = FileProvider.getUriForFile(getContext(),
+                    "com.bignerdranch.android.criminalintent.fileprovider",
+                    mPhotoFile);
+
+            getActivity().revokeUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            updatePhoto();
         }
 
     }
