@@ -47,6 +47,7 @@ public class CrimeFragment extends Fragment {
 
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
+    public static final String DIALOG_IMAGE = "DialogImage";
 
     private static final int REQUEST_DATE = 0;
     public static final int REQUEST_CONTACT = 1;
@@ -159,6 +160,15 @@ public class CrimeFragment extends Fragment {
 
         mPhotoButton = view.findViewById(R.id.crime_camera);
         mPhotoView = view.findViewById(R.id.crime_photo);
+
+        mPhotoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager manager = getFragmentManager();
+                ImageFragmnet imageFragmnet = ImageFragmnet.newInstance(mPhotoFile.toString());
+                imageFragmnet.show(manager, DIALOG_IMAGE);
+            }
+        });
 
         // Repeat and understand all this code until...
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
