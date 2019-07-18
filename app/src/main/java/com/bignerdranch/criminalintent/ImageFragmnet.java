@@ -12,8 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
-import java.util.zip.Inflater;
-
 public class ImageFragmnet extends DialogFragment {
     public static final String ARG_FILEPATH = "filepath";
 
