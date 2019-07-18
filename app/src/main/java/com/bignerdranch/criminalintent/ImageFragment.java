@@ -12,21 +12,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
-public class ImageFragmnet extends DialogFragment {
+public class ImageFragment extends DialogFragment {
     public static final String ARG_FILEPATH = "filepath";
 
     private ImageView mPhotoView;
 
     private String mPhotoPath;
 
-    public static ImageFragmnet newInstance(String path){
+    public static ImageFragment newInstance(String path){
         Bundle bundle = new Bundle();
         bundle.putString(ARG_FILEPATH, path);
 
-        ImageFragmnet imageFragmnet = new ImageFragmnet();
-        imageFragmnet.setArguments(bundle);
+        ImageFragment imageFragment = new ImageFragment();
+        imageFragment.setArguments(bundle);
 
-        return imageFragmnet;
+        return imageFragment;
     }
 
     @NonNull

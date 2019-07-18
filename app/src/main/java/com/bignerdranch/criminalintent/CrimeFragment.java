@@ -165,8 +165,8 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FragmentManager manager = getFragmentManager();
-                ImageFragmnet imageFragmnet = ImageFragmnet.newInstance(mPhotoFile.toString());
-                imageFragmnet.show(manager, DIALOG_IMAGE);
+                ImageFragment imageFragment = ImageFragment.newInstance(mPhotoFile.toString());
+                imageFragment.show(manager, DIALOG_IMAGE);
             }
         });
 
