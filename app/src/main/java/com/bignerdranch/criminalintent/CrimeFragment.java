@@ -20,6 +20,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -170,6 +171,15 @@ public class CrimeFragment extends Fragment {
             }
         });
 
+        ViewTreeObserver viewTreeObserver = mPhotoView.getViewTreeObserver();
+        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                updatePhoto(mPhotoView.getWidth(), mPhotoView.getHeight());
+
+            }
+        });
+
         // Repeat and understand all this code until...
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -198,8 +208,6 @@ public class CrimeFragment extends Fragment {
             }
         });
         // ... here
-
-        updatePhoto();
 
         return view;
     }
@@ -239,8 +247,6 @@ public class CrimeFragment extends Fragment {
                     mPhotoFile);
 
             getActivity().revokeUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-            updatePhoto();
         }
 
     }
@@ -273,11 +279,11 @@ public class CrimeFragment extends Fragment {
         return report;
     }
 
-    private void updatePhoto(){
+    private void updatePhoto(int with, int height){
         if(mPhotoFile == null || !mPhotoFile.exists()){
             mPhotoView.setImageDrawable(null);
         }else{
-            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
+            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), with, height);
             mPhotoView.setImageBitmap(bitmap);
         }
     }
