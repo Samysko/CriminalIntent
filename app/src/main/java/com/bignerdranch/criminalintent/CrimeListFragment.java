@@ -27,10 +27,13 @@ public class CrimeListFragment extends Fragment {
     private TextView mDateTextView;
 
     private boolean mSubtitleVisible;
-    private Callbacks callbacks;
+    private Callbacks mCallbacks;
 
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
 
+    /**
+     * Required interface for hosting activities
+     */
     public interface Callbacks{
         void onCrimeSelected(Crime c);
     }
@@ -39,7 +42,7 @@ public class CrimeListFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        callbacks = (Callbacks) context;
+        mCallbacks = (Callbacks) context;
     }
 
     @Override
@@ -79,8 +82,8 @@ public class CrimeListFragment extends Fragment {
             case R.id.new_crime:
                 Crime crime = new Crime();
                 CrimeLab.get(getActivity()).addCrime(crime);
-                Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
-                startActivity(intent);
+                updateUI();
+                mCallbacks.onCrimeSelected(crime);
                 return true;
             case R.id.show_subtitle:
                 mSubtitleVisible = !mSubtitleVisible;// Changes the state each time the method is called
@@ -141,7 +144,7 @@ public class CrimeListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
 
-        callbacks = null;
+        mCallbacks = null;
     }
 
     private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -150,8 +153,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
-            startActivity(intent);
+            mCallbacks.onCrimeSelected(mCrime);
         }
 
         public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
