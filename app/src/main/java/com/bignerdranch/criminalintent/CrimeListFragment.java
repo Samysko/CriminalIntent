@@ -1,5 +1,6 @@
 package com.bignerdranch.criminalintent;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,8 +27,20 @@ public class CrimeListFragment extends Fragment {
     private TextView mDateTextView;
 
     private boolean mSubtitleVisible;
+    private Callbacks callbacks;
 
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
+
+    public interface Callbacks{
+        void onCrimeSelected(Crime c);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        callbacks = (Callbacks) context;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -122,6 +135,13 @@ public class CrimeListFragment extends Fragment {
 
         updateSubtitle();
 
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        callbacks = null;
     }
 
     private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
