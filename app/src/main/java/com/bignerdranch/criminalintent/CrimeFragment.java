@@ -227,6 +227,7 @@ public class CrimeFragment extends Fragment {
         if(requestCode == REQUEST_DATE){
             Date date = (Date) data.getExtras().getSerializable(DatePickerFragment.EXTRA_DATE);
             mCrime.setDate(date);
+            updateCrime();
             updateDate();
         } else if(requestCode == REQUEST_CONTACT && data != null){
             Uri uri = data.getData();
@@ -242,6 +243,7 @@ public class CrimeFragment extends Fragment {
                 c.moveToFirst();
                 String suspect = c.getString(0);
                 mCrime.setSuspect(suspect);
+                updateCrime();
                 mContactButton.setText(mCrime.getSuspect());
             } finally {
                 c.close();
@@ -255,6 +257,7 @@ public class CrimeFragment extends Fragment {
             getActivity().revokeUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
             updatePhoto();
+            updateCrime();
         }
 
     }
