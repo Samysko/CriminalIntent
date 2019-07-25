@@ -94,6 +94,15 @@ public class CrimeLab {
 
     }
 
+    public void deleteCrime(Crime crime){
+        String uuidString = crime.getId().toString();
+
+        mSQLiteDatabase.delete(CrimeTable.NAME,
+                CrimeTable.Cols.UUID + "= ?",
+                new String[]{uuidString});
+
+    }
+
     public Crime getCrime(UUID uuid){
         CrimeCursorWrapper cursor = getQueryCrimes(
                 CrimeTable.Cols.UUID + "= ?",
