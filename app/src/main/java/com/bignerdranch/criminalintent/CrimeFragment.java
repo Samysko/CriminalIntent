@@ -1,6 +1,7 @@
 package com.bignerdranch.criminalintent;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -48,6 +49,8 @@ public class CrimeFragment extends Fragment {
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
 
+    private Callbacks mCallbacks; //Interface variable
+
     private static final int REQUEST_DATE = 0;
     public static final int REQUEST_CONTACT = 1;
     public static final int REQUEST_PHOTO = 2;
@@ -59,6 +62,19 @@ public class CrimeFragment extends Fragment {
         CrimeFragment crimeFragment = new CrimeFragment();
         crimeFragment.setArguments(args);
         return crimeFragment;
+    }
+
+    /**
+     * Required interface for hosting activities
+     */
+    public interface Callbacks{
+        void onCrimeUpdated();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbacks = (Callbacks) context;
     }
 
     @Override
@@ -192,6 +208,12 @@ public class CrimeFragment extends Fragment {
         updatePhoto();
 
         return view;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
     }
 
     @Override
