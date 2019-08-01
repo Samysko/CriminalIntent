@@ -263,7 +263,7 @@ public class CrimeFragment extends Fragment {
     }
 
     private void updateDate() {
-        mDateButton.setText(mCrime.getDate().toString());
+        mDateButton.setText(DateFormat.getDateInstance(DateFormat.MEDIUM).format(mCrime.getDate()));
     }
 
     private String getCrimeReport(){
@@ -274,8 +274,7 @@ public class CrimeFragment extends Fragment {
             solvedString = getString(R.string.crime_report_unsolved);
         }
 
-        String dateString = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.US)
-                .format(mCrime.getDate());
+        String dateString = DateFormat.getDateInstance(DateFormat.MEDIUM).format(mCrime.getDate());
 
         String suspect = mCrime.getSuspect();
         if(suspect == null){
