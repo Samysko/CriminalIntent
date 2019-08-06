@@ -123,6 +123,9 @@ public class CrimeFragment extends Fragment {
 
         mDateButton = view.findViewById(R.id.crime_date);
         updateDate();
+        String dateString = getString(R.string.crime_date_button_description,
+                mCrime.getDate().toString());
+        mDateButton.setContentDescription(dateString);
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,6 +162,7 @@ public class CrimeFragment extends Fragment {
 
         final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         mContactButton = view.findViewById(R.id.crime_suspect);
+        mContactButton.setContentDescription(getString(R.string.crime_suspect_text));
         mContactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,6 +172,9 @@ public class CrimeFragment extends Fragment {
 
         if(mCrime.getSuspect() != null){
             mContactButton.setText(mCrime.getSuspect());
+            mContactButton.
+                    setContentDescription(getString(R.string.crime_suspect_button_description,
+                            mCrime.getSuspect()));
         }
 
         final PackageManager packageManager = getActivity().getPackageManager();
@@ -245,6 +252,9 @@ public class CrimeFragment extends Fragment {
                 mCrime.setSuspect(suspect);
                 updateCrime();
                 mContactButton.setText(mCrime.getSuspect());
+                mContactButton.
+                        setContentDescription(getString(R.string.crime_suspect_button_description,
+                                mCrime.getSuspect()));
             } finally {
                 c.close();
             }
