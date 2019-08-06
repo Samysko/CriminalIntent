@@ -27,9 +27,9 @@
     <string name="crime_title_description">Crime title: %1$s</string>
     <string name="crime_date_description">Crime date: %1$s</string>
     <string name="crime_suspect_button_description">
-        Current suspect is: $s, do you want to chane it?
+        Current suspect is: %1$s, do you want to chane it?
     </string>
     <string name="crime_date_button_description">
-        Date of the crime: $s, do you want to change it?
+        Date of the crime: %1$s, do you want to change it?
     </string>
 </resources>

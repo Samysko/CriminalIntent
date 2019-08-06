@@ -28,9 +28,9 @@
     <string name="crime_title_description">Título del crimen: %1$s</string>
     <string name="crime_date_description">Fecha del crimen: %1$s</string>
     <string name="crime_suspect_button_description">
-        Actual sospechoso es: $s, quieres cambiarlo?
+        Actual sospechoso es: %1$s, quieres cambiarlo?
     </string>
     <string name="crime_date_button_description">
-        Fecha del crimen: $s, quieres cambiarlo?
+        Fecha del crimen: %1$s, quieres cambiarlo?
     </string>
 </resources>
