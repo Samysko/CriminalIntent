@@ -172,6 +172,7 @@ public class CrimeListFragment extends Fragment {
 
             mSolvedImage.setVisibility(crime.isSolved() ? View.VISIBLE
                     : View.GONE);
+            mSolvedImage.setContentDescription(getString(R.string.crime_report_solved));
         }
     }
 
