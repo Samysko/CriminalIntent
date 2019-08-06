@@ -24,4 +24,7 @@
     <string name="crime_photo_button_description">Toma foto de escena del crimen</string>
     <string name="crime_photo_no_image_description">Foto de escena del crimen (no definida)</string>
     <string name="crime_photo_image_description">Foto de escena del crimen (definida)</string>
+    <string name="crime_no_title">El crimen no tiene titulo, haz doble tap para cambiarlo</string>
+    <string name="crime_title_description">Título del crimen: %1$s</string>
+    <string name="crime_date_description">Fecha del crimen: %1$s</string>
 </resources>
