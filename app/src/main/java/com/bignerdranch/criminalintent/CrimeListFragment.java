@@ -162,13 +162,16 @@ public class CrimeListFragment extends Fragment {
 
             mTitleTextView = itemView.findViewById(R.id.crime_title);
             if(mCrime.getTitle().isEmpty()){
-                mTitleTextView.setContentDescription("Crime has no title");
+                mTitleTextView.setContentDescription(getString(R.string.crime_no_title));
             }else{
-                mTitleTextView.setContentDescription("Crime Title: " + mCrime.getTitle());
+                String titleDescription = getString(R.string.crime_title_description,
+                        mCrime.getTitle());
+                mTitleTextView.setContentDescription(titleDescription);
             }
             mDateTextView = itemView.findViewById(R.id.crime_date);
-            mDateTextView.setContentDescription("Date of the crime: " + mCrime.getDate()
-                    .toString());
+            String dateDescription = getString(R.string.crime_date_description,
+                    mCrime.getDate().toString());
+            mDateTextView.setContentDescription(dateDescription);
             mSolvedImage = itemView.findViewById(R.id.crime_solved);
         }
 
