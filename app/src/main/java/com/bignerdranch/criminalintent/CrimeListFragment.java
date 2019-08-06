@@ -161,7 +161,14 @@ public class CrimeListFragment extends Fragment {
             itemView.setOnClickListener(this);
 
             mTitleTextView = itemView.findViewById(R.id.crime_title);
+            if(mCrime.getTitle().isEmpty()){
+                mTitleTextView.setContentDescription("Crime has no title");
+            }else{
+                mTitleTextView.setContentDescription("Crime Title: " + mCrime.getTitle());
+            }
             mDateTextView = itemView.findViewById(R.id.crime_date);
+            mDateTextView.setContentDescription("Date of the crime: " + mCrime.getDate()
+                    .toString());
             mSolvedImage = itemView.findViewById(R.id.crime_solved);
         }
 
@@ -170,9 +177,14 @@ public class CrimeListFragment extends Fragment {
             mTitleTextView.setText(mCrime.getTitle());
             mDateTextView.setText(mCrime.getDate().toString());
 
-            mSolvedImage.setVisibility(crime.isSolved() ? View.VISIBLE
-                    : View.GONE);
-            mSolvedImage.setContentDescription(getString(R.string.crime_report_solved));
+            if(crime.isSolved()){
+                mSolvedImage.setVisibility(View.VISIBLE);
+                mSolvedImage.setContentDescription(getString(R.string.crime_report_solved));
+            }else{
+                mSolvedImage.setVisibility(View.GONE);
+                mSolvedImage.setContentDescription(getString(R.string.crime_report_unsolved));
+            }
+
         }
     }
 
